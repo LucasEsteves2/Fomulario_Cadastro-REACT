@@ -1,14 +1,17 @@
 import React from 'react';
 import FormularioCadastro from './components/FormularioCadastro/FormularioCadastro';
-
+import Container from '@material-ui/core/Container'
 
 class App extends React.Component {
   render() { 
-    return <div>
+    return ( 
+    
+    <Container fixed maxWidth="sm">
 
-      <h1>CONTADOR</h1>
+
       <FormularioCadastro/>
-    </div>;
+    </Container>
+    )
   }
 }
  
