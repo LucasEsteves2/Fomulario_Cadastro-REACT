@@ -9,13 +9,13 @@ function FormularioCadastro(props) {
     const [sobrenome, setSobrenome] = useState("");
     const [promocao, setPromcocao] = useState(true);
     const [novidades, setNovidades] = useState(false);
-
+    const [erro, setErro] = useState({ cpf: { valido: true, texto: "" } })
 
     return (
         <>
             <form onSubmit={event => {
                 event.preventDefault()
-                props.aa({usuario,cpf,sobrenome,promocao,novidades})
+                props.aa({ usuario, cpf, sobrenome, promocao, novidades })
             }}>
                 <Typography align='center' variant="h3" component="h1" >Formulario de Cadastro</Typography>
 
@@ -31,29 +31,51 @@ function FormularioCadastro(props) {
                     }}
                 />
 
-                <TextField id="cpf" label="Cpf:" variant="outlined" margin="normal" fullWidth value={cpf}
+                
+                <TextField id="cpf"    label="Cpf:" variant="outlined" margin="normal" fullWidth value={cpf}
+
+
+                    
+                onBlur={event =>{
+                    setErro({cpf:{valido:false,texto:"cpf invalido!!"}})
+
+                }}
+
+                    error={!erro.cpf.valido}
+                    helperText={erro.cpf.texto}
                     onChange={(event) => {
+
                         let temp2 = event.target.value;
+
+
                         if (temp2.length >= 14) {
-                            temp2=    temp2.substr(0,14);
-                            }
+                            temp2 = temp2.substr(0, 14);
+                        }
+
+                        x
+
+
                         setCpf(temp2)
                     }}
+                
 
                 />
 
-                <FormControlLabel label="Promoções" control={<Switch nome="Promo" checked={promocao} color="primary" />} 
-                onChange={(event) => {
-                    setPromcocao(event.target.checked)
-                }}
-                
+                    
+
+                <FormControlLabel label="Promoções" control={<Switch nome="Promo" checked={promocao} color="primary" />}
+                    onChange={(event) => {
+                        setPromcocao(event.target.checked)
+                    }   
+                }
+
                 />
 
-                <FormControlLabel label="Novidades" control={<Switch nome="Novidades" checked={novidades}color="primary" />}
-                onChange={event=>{
-                    setNovidades( event.target.checked  )
-                }}
-                
+                <FormControlLabel label="Novidades" control={<Switch nome="Novidades" checked={novidades} color="primary" />}
+                    onChange={event => {
+                        setNovidades(event.target.checked)
+                    }}
+
                 />
 
                 <Button variant="contained" color="primary" type="submit" >
