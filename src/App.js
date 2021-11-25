@@ -3,17 +3,18 @@ import FormularioCadastro from './components/FormularioCadastro/FormularioCadast
 import Container from '@material-ui/core/Container'
 
 
-class App extends React.Component {
-  render() { 
+function App()  {
+
     return ( 
-    
     <Container fixed maxWidth="sm">
-
-
-      <FormularioCadastro/>
+      <FormularioCadastro aoEnviar={formularioLogin}/>
     </Container>
     )
   }
+  
+function formularioLogin(dados)
+{
+  console.log(dados)
 }
- 
+
 export default App;
