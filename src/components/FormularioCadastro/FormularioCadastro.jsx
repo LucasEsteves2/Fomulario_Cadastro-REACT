@@ -1,90 +1,49 @@
-import React, { useState } from 'react';
-import { Button, TextField, Switch, FormControlLabel, Typography } from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import DadosEntrega from "./DadosEntrega";
+import DadosPessoais from "./DadosPessoais";
+import DadosUsuario from "./DadosUsuario";
+import {Typography,Stepper, StepLabel,Step} from '@material-ui/core'
 
+import "./style.css";
 
-function FormularioCadastro(props) {
+function FormularioCadastro({ aoEnviar }) {
+  const [etapa, setEtapa] = useState(0);
+  const [dados, setDados] = useState([]);
 
-    const [usuario, setUsuario] = useState("")
-    const [cpf, setCpf] = useState("");
-    const [sobrenome, setSobrenome] = useState("");
-    const [promocao, setPromcocao] = useState(true);
-    const [novidades, setNovidades] = useState(false);
-    const [erro, setErro] = useState({ cpf: { valido: true, texto: "" } })
+  useEffect(() => {   
+    if(etapa===formularios.length-1)
+    aoEnviar(dados)
+  });
 
-    return (
-        <>
-            <form onSubmit={event => {
-                event.preventDefault()
-                props.aa({ usuario, cpf, sobrenome, promocao, novidades })
-            }}>
-                <Typography align='center' variant="h3" component="h1" >Formulario de Cadastro</Typography>
+  //array para guardar os forumarlios
+  const formularios = [
+    <DadosUsuario aoEnviar={dadosColetados} />,
+    <DadosPessoais aoEnviar={dadosColetados} />,
+    <DadosEntrega aoEnviar={dadosColetados} />,
+    <Typography align="center" variant="h3" component="h1"> Obrigado Pelo Cadastro!!  </Typography>
+  ];
 
-                <TextField id="usuario" label="Nome:" variant="outlined" margin="normal" fullWidth value={usuario}
-                    onChange={(event) => {
-                        setUsuario(event.target.value);
-                    }} />
+  function dadosColetados(dadosformulario) {
+    setDados({...dados, ...dadosformulario });
+    proximaPagina();
+  }
 
+  function proximaPagina() {
+    setEtapa(etapa + 1);
+  }
 
-                <TextField id="nome" label="Sobrenome:" variant="outlined" margin="normal" fullWidth value={sobrenome}
-                    onChange={(event) => {
-                        setSobrenome(event.target.value)
-                    }}
-                />
+  return <>
+  
+  <Stepper activeStep={etapa} alternativeLabel>
+  <Step><StepLabel>Login</StepLabel></Step>
+  <Step><StepLabel>Pessoal</StepLabel></Step>
+  <Step><StepLabel>Entrega</StepLabel></Step>
+  <Step><StepLabel>Finalização</StepLabel></Step>
 
-                
-                <TextField id="cpf"    label="Cpf:" variant="outlined" margin="normal" fullWidth value={cpf}
-
-
-                    
-                onBlur={event =>{
-                    setErro({cpf:{valido:false,texto:"cpf invalido!!"}})
-
-                }}
-
-                    error={!erro.cpf.valido}
-                    helperText={erro.cpf.texto}
-                    onChange={(event) => {
-
-                        let temp2 = event.target.value;
-
-
-                        if (temp2.length >= 14) {
-                            temp2 = temp2.substr(0, 14);
-                        }
-
-                        x
-
-
-                        setCpf(temp2)
-                    }}
-                
-
-                />
-
-                    
-
-                <FormControlLabel label="Promoções" control={<Switch nome="Promo" checked={promocao} color="primary" />}
-                    onChange={(event) => {
-                        setPromcocao(event.target.checked)
-                    }   
-                }
-
-                />
-
-                <FormControlLabel label="Novidades" control={<Switch nome="Novidades" checked={novidades} color="primary" />}
-                    onChange={event => {
-                        setNovidades(event.target.checked)
-                    }}
-
-                />
-
-                <Button variant="contained" color="primary" type="submit" >
-                    CADASTRAR
-                </Button>
-            </form>
-        </>
-
-    );
+  </Stepper>
+  {formularios[etapa]}
+  
+  </>;
 }
 
 export default FormularioCadastro;
